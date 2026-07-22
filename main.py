@@ -43,7 +43,8 @@ def get_data(id):
 def get_timestamps(data):
     for i in range(100):
         stopPlaces = data["ServiceDelivery"]["StopMonitoringDelivery"]["MonitoredStopVisit"]
-        monitoredCall = stopPlaces[i]["MonitoredVehicleJourney"]["MonitoredCall"]
+        journey = stopPlaces[i]["MonitoredVehicleJourney"]
+        monitoredCall = journey["MonitoredCall"]
         if monitoredCall["ExpectedArrivalTime"] is None:
             print("this one has nothing available")
             continue
@@ -54,7 +55,8 @@ def get_timestamps(data):
         if int(eta.total_seconds()) <= 0:
             print('it has already arrived!')
         else: 
-            print("It is expected to come in " + str(eta.total_seconds()) + " seconds")
+            if journey['OriginName'] != None:
+                print("Transportation from " + journey['OriginName'] + " is expected to arrive at " + monitoredCall["StopPointName"] + " in " + str(eta.total_seconds()) + " seconds")
 
     
     
