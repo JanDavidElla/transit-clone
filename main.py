@@ -1,6 +1,8 @@
 import requests
 import json
 from datetime import datetime, timedelta
+from stop import Stop
+from pprint import pprint
 
 base_url = "https://api.511.org/transit/stopplaces?api_key=1b477b94-510b-4227-a5c2-b8436f015197&operator_id=CT&format=json"
 stop_time_url = "https://api.511.org/transit/StopMonitoring?api_key=1b477b94-510b-4227-a5c2-b8436f015197&agency=CT&format=json"
@@ -11,6 +13,8 @@ stop_time_url = "https://api.511.org/transit/StopMonitoring?api_key=1b477b94-510
 #   -  [0]["MonitoredVehicleJourney"].MonitoredCall.ExpectedDepartureTime returns expected departure time
 #   -  [0]["MonitoredVehicleJourney"].MonitoredCall.AimedArrivalTime returns aimed arrivalhttps://api.511.org/transit/stopplaces?api_key=1b477b94-510b-4227-a5c2-b8436f015197&operator_id=CT&format=json time
 #   -  [0]["MonitoredVehicleJourney"].MonitoredCall.AimedDepartureTime returns aimed departure time
+
+#   -  [0]["MonitoredVehicleJourney"].LineRef returns line of transportation (ex. 522 for VTA)
 
 
 #(base_url).Siri.ServiceDelivery.DataObjectDelivery.dataObjects.SiteFrame.stopPlaces.StopPlace returns a list of objects ()
@@ -41,22 +45,45 @@ def get_data(id):
         get_timestamps(data)
 
 def get_timestamps(data):
+    # for i in range(100):
+    #     stopPlaces = data["ServiceDelivery"]["StopMonitoringDelivery"]["MonitoredStopVisit"]
+    #     journey = stopPlaces[i]["MonitoredVehicleJourney"]
+    #     monitoredCall = journey["MonitoredCall"]
+    #     if monitoredCall["ExpectedArrivalTime"] is None:
+    #         print("this one has nothing available")
+    #         continue
+    #     expectedArrivalTime = datetime.fromisoformat(monitoredCall["ExpectedArrivalTime"].replace("Z", "+00:00"))
+    #     now = datetime.now(expectedArrivalTime.tzinfo)
+    
+    #     eta = expectedArrivalTime - now
+    #     if int(eta.total_seconds()) <= 0:
+    #         print('it has already arrived!')
+    #     else: 
+    #         if journey['OriginName'] != None:
+    #             print("Transportation from " + journey['OriginName'] + " is expected to arrive at " + monitoredCall["StopPointName"] + " in " + str(eta.total_seconds()) + " seconds")
+
+    stopPlaces = data["ServiceDelivery"]["StopMonitoringDelivery"]["MonitoredStopVisit"]
     for i in range(100):
-        stopPlaces = data["ServiceDelivery"]["StopMonitoringDelivery"]["MonitoredStopVisit"]
         journey = stopPlaces[i]["MonitoredVehicleJourney"]
-        monitoredCall = journey["MonitoredCall"]
-        if monitoredCall["ExpectedArrivalTime"] is None:
-            print("this one has nothing available")
+        call = journey["MonitoredCall"]
+        if call["ExpectedArrivalTime"] is None:
             continue
-        expectedArrivalTime = datetime.fromisoformat(monitoredCall["ExpectedArrivalTime"].replace("Z", "+00:00"))
+        expectedArrivalTime = datetime.fromisoformat(call["ExpectedArrivalTime"].replace("Z", "+00:00"))
         now = datetime.now(expectedArrivalTime.tzinfo)
     
         eta = expectedArrivalTime - now
-        if int(eta.total_seconds()) <= 0:
-            print('it has already arrived!')
-        else: 
-            if journey['OriginName'] != None:
-                print("Transportation from " + journey['OriginName'] + " is expected to arrive at " + monitoredCall["StopPointName"] + " in " + str(eta.total_seconds()) + " seconds")
+
+        if call["StopPointName"] not in listOfStops:
+            listOfStops[call["StopPointName"]] = {}
+
+        listOfStops[call["StopPointName"]][journey["OriginName"]] = str(eta.total_seconds())
+
+
+
+        #dictionary of dictionaries
+        # listOfStops = {onestop: {fromThis: time, fromThis: time},
+        #                }
+
 
     
     
@@ -65,9 +92,11 @@ def get_timestamps(data):
 
 
 #Main function
+listOfStops = {}
 id = input("Name your public transit agency pwease: ").strip().upper()
 stop = input("Name your stop pwetty pwease: ")
 get_data(id)
+pprint(listOfStops)
 
 
 
