@@ -80,10 +80,6 @@ def get_timestamps(data):
 
 
 
-        #dictionary of dictionaries
-        # listOfStops = {onestop: {fromThis: time, fromThis: time},
-        #                }
-
 
     
     
@@ -94,7 +90,6 @@ def get_timestamps(data):
 #Main function
 listOfStops = {}
 id = input("Name your public transit agency pwease: ").strip().upper()
-stop = input("Name your stop pwetty pwease: ")
 get_data(id)
 pprint(listOfStops)
 
