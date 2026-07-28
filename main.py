@@ -30,6 +30,9 @@ if not api_key:
 # - [0].name returns stop title 
 # - timestamps
 
+def root():
+    return {"message": "Hello, World!"}
+
 def get_data(id, stop_code):
     stripped_id = id.strip().upper()
     stop_time_url = f"https://api.511.org/transit/StopMonitoring?api_key={api_key}&agency={stripped_id}&stopcode={stop_code}&format=json"
@@ -38,58 +41,40 @@ def get_data(id, stop_code):
     stop = Stop(stop_id=stop_code, operator_id=stripped_id)
 
     time_response = requests.get(stop_time_url, timeout=20)
-    if time_response.status_code == 200:
-        data = json.loads(time_response.content.decode("utf-8-sig"))
-        get_timestamps(data, stop)
+    time_response.raise_for_status()  # Raise an exception for HTTP errors
+    
+    data = json.loads(time_response.content.decode("utf-8-sig"))
+    get_timestamps(data, stop)
+
     return stop
 
 
 def get_timestamps(data, stop: Stop):
     visits = data["ServiceDelivery"]["StopMonitoringDelivery"]["MonitoredStopVisit"]
-    # for i in range(100):
-    #     journey = stopPlaces[i]["MonitoredVehicleJourney"]
-    #     call = journey["MonitoredCall"]
-    #     if call["ExpectedArrivalTime"] is None:
-    #         continue
-    #     expectedArrivalTime = datetime.fromisoformat(call["ExpectedArrivalTime"].replace("Z", "+00:00"))
-    #     now = datetime.now(expectedArrivalTime.tzinfo)
-    
-    #     eta = expectedArrivalTime - now
 
-    #     if call["StopPointName"] not in listOfStops:
-    #         listOfStops[call["StopPointName"]] = {}
-
-    #     listOfStops[call["StopPointName"]][journey["OriginName"]] = str(eta.total_seconds())
-    
     for visit in visits:
         journey = visit["MonitoredVehicleJourney"]
-        line_ref = journey["LineRef"]
         call = journey["MonitoredCall"]
         eta = call["ExpectedArrivalTime"]
-        if call["ExpectedArrivalTime"] is None:
+        if eta is None:
             continue
     
         arrival_time = datetime.fromisoformat(eta.replace("Z", "+00:00"))
 
-        matching_prediction = next((p for p in stop.predictions if p.route == line_ref), None)
-
-        if matching_prediction is not None:
-            matching_prediction.arrival_times.append(arrival_time)
-        else:
-            stop.predictions.append(Prediction(route=line_ref, arrival_times=[arrival_time]))
-
-        # expectedArrivalTime = datetime.fromisoformat(eta.replace("Z", "+00:00"))
-        # now = datetime.now(expectedArrivalTime.tzinfo)
-        # seconds = expectedArrivalTime - now
-
+        
+        stop.add_arrival(
+            route=journey["LineRef"],
+            arrival_time=arrival_time
+        )
 
 
         
 
 #Main function
-id = input("Name your public transit agency pwease: ").strip().upper()
-stop_code = input("Enter stop code pwease: ").strip()
-pprint(get_data(id, stop_code))
+if __name__ == "__main__":
+    id = input("Name your public transit agency pwease: ").strip().upper()
+    stop_code = input("Enter stop code pwease: ").strip()
+    pprint(get_data(id, stop_code))
 
 
 

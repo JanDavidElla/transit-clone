@@ -1,15 +1,25 @@
 # transit-clone
 
 - This is a transit program that shows you how long it takes for a specific vehicle to reach a stop
+- Returns a Stop Instance that contains the id of stop, id of agency, and the list of predictions to that particular stop.
 
 # REQUIRED:
-- create a .env file, insert a TRANSIT_API_KEY=(enter key here), otherwise it won't work.
+- create a .env file otherwise it won't work.
 
 # TO-DO:
 - Have to work on search improvements.
-- Have to implement stop class for easy searches.
 
 
-Relies on a list of stops, that shows the destination, and how long it takes from the departing location.
-- listOfStops = {onestop: {fromThis: time, fromThis: time}, secondStop: {} ... }
-![Sample of location of API Call](image.png)
+
+
+# Required .env file contents:
+![alt text](image-1.png)
+- Sample: 
+- agency id = SC (vta)
+- stop code = 60439
+
+# How to Run:
+- Make sure that your .env file has all required contents.
+- In your terminal, run python server.py
+- File can be viewed in http://localhost:8000
+- Enjoy!
