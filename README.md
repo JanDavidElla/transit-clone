@@ -20,6 +20,7 @@
 
 # How to Run:
 - Make sure that your .env file has all required contents.
-- In your terminal, run python server.py
-- File can be viewed in http://localhost:8000
-- Enjoy!
+- In your terminal, run this:
+- `docker-compose -f docker-compose.dev.yml up --build`
+- To close:
+- `docker compose -f docker-compose.dev.yml down`
