@@ -10,7 +10,7 @@ from fastapi.encoders import jsonable_encoder
 
 from main import get_data
 
-POLL_INTERVAL = 60  # seconds
+POLL_INTERVAL = float(os.getenv("POLL_INTERVAL") or 10) # seconds
 STOP_CODE = os.getenv("TRANSIT_STOP_CODE") #REQUIRED: adding code from env soon
 ID = os.getenv("TRANSIT_AGENCY_ID") #REQUIRED: adding id from env soon
 

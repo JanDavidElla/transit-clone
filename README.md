@@ -17,6 +17,7 @@
 - Sample: 
 - agency id = SC (vta)
 - stop code = 60439
+- optional parameter: POLL_INTERVAL=15 (updates every 15 sec)
 
 # How to Run:
 - Make sure that your .env file has all required contents.
