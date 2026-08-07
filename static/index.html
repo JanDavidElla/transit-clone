@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="refresh" content="30">
     <title>Transit Arrivals</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <!-- <link rel="stylesheet" href="/static/styles.css"> -->
   </head>
   <body>
     <main>
@@ -17,9 +17,23 @@
 
       <section>
         <h2>Upcoming arrivals</h2>
-        <div class="arrivals">
-          {{ARRIVAL_ROWS}}
-        </div>
+        <table class="arrivals">
+          <colgroup>
+            <col class="route-column">
+            <col class="due-column">
+            <col class="time-column">
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col">Route</th>
+              <th scope="col">Arrival</th>
+              <th scope="col">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ARRIVAL_ROWS}}
+          </tbody>
+        </table>
       </section>
     </main>
   </body>

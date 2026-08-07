@@ -74,30 +74,34 @@ def root():
         stop_id = STOP_CODE or "-"
         operator_id = ID or "-"
         updated_at = "waiting for data"
-        arrival_rows = '<p class="empty">Arrival information is loading. This page will refresh automatically.</p>'
+        arrival_rows = (
+            '<tr><td colspan="3" class="empty">'
+            'Arrival information is loading. This page will refresh automatically.'
+            '</td></tr>'
+        )
     else:
         stop_id = stop.stop_id
         operator_id = stop.operator_id
         updated_at = fetched_at.astimezone(TIME_ZONE).strftime("%I:%M %p") if fetched_at else "just now"
-        cards = []
+        rows = []
 
         for prediction in stop.predictions:
-            times = []
             for arrival_time in prediction.arrival_times:
                 minutes = max(0, round((arrival_time - datetime.now(timezone.utc)).total_seconds() / 60))
                 label = "Due now" if minutes == 0 else f"{minutes} min"
-                times.append(
-                    f'<span><strong>{label}</strong><small>{arrival_time.astimezone(TIME_ZONE).strftime("%I:%M %p")}</small></span>'
+                local_arrival = arrival_time.astimezone(TIME_ZONE).strftime("%I:%M %p")
+                rows.append(
+                    '<tr>'
+                    f'<td><span class="route">{escape(prediction.route)}</span></td>'
+                    f'<td><strong>{label}</strong></td>'
+                    f'<td><time>{local_arrival}</time></td>'
+                    '</tr>'
                 )
 
-            cards.append(
-                '<article class="arrival">'
-                f'<span class="route">{escape(prediction.route)}</span>'
-                f'<div class="times">{"".join(times)}</div>'
-                '</article>'
-            )
-
-        arrival_rows = "".join(cards) or '<p class="empty">No upcoming arrivals right now.</p>'
+        arrival_rows = (
+            "".join(rows)
+            or '<tr><td colspan="3" class="empty">No upcoming arrivals right now.</td></tr>'
+        )
 
     page = page.replace("{{STOP_ID}}", escape(stop_id))
     page = page.replace("{{OPERATOR_ID}}", escape(operator_id))

@@ -46,18 +46,31 @@ h2 {
 }
 
 .arrivals {
-  display: grid;
-  gap: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
 }
 
-.arrival {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  padding: 18px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: white;
+.route-column {
+  width: 20%;
+}
+
+.due-column,
+.time-column {
+  width: 40%;
+}
+
+.arrivals th,
+.arrivals td {
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.arrivals th {
+  color: #666;
+  font-size: 13px;
+  text-transform: uppercase;
 }
 
 .route {
@@ -70,27 +83,12 @@ h2 {
   text-align: center;
 }
 
-.times {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-
-.times span {
-  display: grid;
-  gap: 3px;
-}
-
-.times small,
 .empty {
   color: #666;
 }
 
 .empty {
-  padding: 18px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: white;
+  text-align: center;
 }
 
 @media (max-width: 500px) {
@@ -98,8 +96,8 @@ h2 {
     margin: 24px auto;
   }
 
-  .arrival {
-    align-items: flex-start;
-    flex-direction: column;
+  .arrivals th,
+  .arrivals td {
+    padding: 12px 8px;
   }
 }
