@@ -25,3 +25,6 @@
 - `docker-compose -f docker-compose.dev.yml up --build`
 - To close:
 - `docker compose -f docker-compose.dev.yml down`
+
+Open `http://localhost:8000` to view the live arrival board. The JSON data used by
+the page is available at `http://localhost:8000/api/transit`.
