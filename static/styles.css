@@ -1,0 +1,105 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #222;
+  background: #f4f4f4;
+  font-family: Arial, sans-serif;
+}
+
+main {
+  width: min(700px, calc(100% - 32px));
+  margin: 48px auto;
+}
+
+header {
+  padding-bottom: 24px;
+  border-bottom: 1px solid #ccc;
+}
+
+.label {
+  color: #287a4b;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 36px;
+}
+
+header p:last-child {
+  margin: 0;
+  color: #666;
+}
+
+section {
+  margin-top: 32px;
+}
+
+h2 {
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.arrivals {
+  display: grid;
+  gap: 10px;
+}
+
+.arrival {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 18px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+}
+
+.route {
+  min-width: 56px;
+  padding: 8px;
+  border-radius: 5px;
+  color: white;
+  background: #287a4b;
+  font-weight: bold;
+  text-align: center;
+}
+
+.times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.times span {
+  display: grid;
+  gap: 3px;
+}
+
+.times small,
+.empty {
+  color: #666;
+}
+
+.empty {
+  padding: 18px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+}
+
+@media (max-width: 500px) {
+  main {
+    margin: 24px auto;
+  }
+
+  .arrival {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

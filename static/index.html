@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="refresh" content="30">
+    <title>Transit Arrivals</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="label">SCE TRANSIT</p>
+        <h1>Stop {{STOP_ID}}</h1>
+        <p>Agency: {{OPERATOR_ID}} | Updated {{UPDATED_AT}}</p>
+      </header>
+
+      <section>
+        <h2>Upcoming arrivals</h2>
+        <div class="arrivals">
+          {{ARRIVAL_ROWS}}
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
