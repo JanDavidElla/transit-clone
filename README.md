@@ -5,15 +5,12 @@
 
 # REQUIRED:
 - create a .env file otherwise it won't work.
-
-# TO-DO:
-- Have to work on search improvements.
-
-
+- Request an API Key from 511.org, then enter it into your .env file
+- https://511.org/open-data/token
 
 
 # Required .env file contents:
-![alt text](image-1.png)
+![alt text](sample.png)
 - Sample: 
 - agency id = SC (vta)
 - stop code = 60439

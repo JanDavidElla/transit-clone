@@ -20,7 +20,7 @@ header {
 }
 
 .label {
-  color: #287a4b;
+  color: #3442c0;
   font-size: 13px;
   font-weight: bold;
   text-transform: uppercase;
@@ -65,7 +65,7 @@ h2 {
   padding: 8px;
   border-radius: 5px;
   color: white;
-  background: #287a4b;
+  background: #3442c0;
   font-weight: bold;
   text-align: center;
 }
